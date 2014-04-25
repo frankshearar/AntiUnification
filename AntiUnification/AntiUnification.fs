@@ -55,21 +55,18 @@ let var base_name n =
 // TODO: At the moment, we use logical variables of the form Var "#z0", Var "#z1", Var "#z2", ... This
 // will cause problems is a user happens to also use names in this namespace.
 let rec antiUnifyTheta examples (theta: (TermSequence<'a> * Term<'a>) list) n =
-    printfn "antiUnifyTheta %A" examples
     match examples with
-    | [] -> failwith "Cannot invoke antiUnifyTheta with []"
+    | [] -> failwith "Cannot invoke antiUnifyTheta with []" // Needed for completeness' sake: antiUnify already protects us from [].
     | t::ts when andMap (fun t' -> t' = t) examples -> (t, theta, n) // rule 7: all examples the same? return the first
     | ((Function (f, args)) as t)::ts when (andMap (function
                                                  | Function (this_name, these_args) -> f = this_name && args.Length = these_args.Length // Function name & arity count!
                                                  | _ -> false) examples) -> // rule 8: recurse into the Function arguments.
-        printfn "recursion1 into %A" (heads (t::ts))
         let (s, theta', n) = antiUnifyTheta (heads (t::ts)) theta n
-        printfn "recursion2 into %A" (tails (t::ts))
         let (tails_au, theta'', n) = antiUnifyTheta (tails (t::ts)) theta' n
         let au_of_args = match tails_au with
                          | (Function (g, ss)) -> Function (f, s::ss)
                          | Var name -> Function (f, (s::[Var name]))
-                         | unrecognised -> failwith (sprintf "recursion2: %A" unrecognised)
+                         | unrecognised -> failwith (sprintf "unrecognised term %A while walking function argument tails" unrecognised)
         (au_of_args, theta'', n)
     | ts when has_map ts theta -> // rule 9: return the previously mapped logical variable
         let (term_sequence, mapped_var) = find_map ts theta
@@ -77,7 +74,7 @@ let rec antiUnifyTheta examples (theta: (TermSequence<'a> * Term<'a>) list) n =
     | ts -> // rule 10: introduce a fresh logical variable
         let z = var "#z" n // This hardcoded base name lets us avoid passing in a name generator. A post-process step could always replace these. But what if someone wants to use "#z" prefixed names....!
         (z, ((ts, z) :: theta), n + 1)
-    | _ -> failwith "There is no rule 11" // Necessary because all the previous matches have when clauses
+    | unrecognised -> failwith (sprintf "There is no rule 11: %A" unrecognised) // Necessary because all the previous matches have when clauses
 
 // preprocess turns all Vars into ground terms by pretending they're constant terms
 let rec preprocess = function
