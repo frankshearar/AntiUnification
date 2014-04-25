@@ -28,6 +28,7 @@ Then
 antiUnify [Val 1; Val 2] = Some (Var "#z0")
 // The examples differ only in the argument to the function, so we parameterise only that:
 antiUnify [Function ("f", [Val 5]); Function ("f", [Val 6])] = Some (Function ("f", [Var "#z0"]))
+````
 
 Further Reading
 -------------
