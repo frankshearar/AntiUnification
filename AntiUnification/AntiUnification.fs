@@ -10,11 +10,12 @@ type Term<'a> =
 
 type TermSequence<'a> = Term<'a> list
 
-// ('a -> bool) -> ['a] -> bool
+// and_map returns true iff a predicate is true for every element in a list
+// ('a -> bool) -> 'a list -> bool
 let andMap f xs =
     List.fold (fun a b -> a && b) true (List.map f xs)
 
-// Given a term sequence (of Functions), return a list of Functions whose contained lists contain the heads of the original Functions
+// heads returns a list of Functions whose contained lists contain the heads of the original Functions when given a term sequence (of Functions)
 let heads xs: Term<'a> list =
     List.map (function
         | Function (name, [t]) -> t
@@ -22,7 +23,7 @@ let heads xs: Term<'a> list =
             Function (name, [t])
         | unrecognised -> failwith (sprintf "heads can only process a Function, not %A" unrecognised)) xs
    
-// Given a term sequence (of Functions), return a list of Functions whose lists are the tails of the original Functions
+// tails returns a list of Functions whose lists are the tails of the original Functions when given a term sequence (of Functions)
 let tails xs =
     List.map (function
         | Function (name, [t]) -> Function (name, [])
@@ -30,24 +31,29 @@ let tails xs =
             Function (name, ts)
         | unrecognised -> failwith (sprintf "tails can only process a Function, not %A" unrecognised)) xs
 
+// has_map returns true iff the substitution maps a term sequence
 let has_map key substitution =
     List.exists (fun e -> fst e = key) substitution
 
+// find_map returns the map for a term sequence in a substitution
 let find_map term_sequence substitution =
     List.find (fun e -> fst e = term_sequence) substitution
 
-// Does the substitution contain a mapping to a logical variable?
+// has_var returns true iff the substitution contain a mapping to a logical variable
 let has_var term_sequence theta =
     List.exists (function
         | (term_sequence, Var _) -> true
         | _ -> false) theta
 
+// base_name turns a prefix and a number into a Var
 let var base_name n =
     Var (sprintf "%s%d" base_name n)
 
-// At the moment, we use logical variables of the form Var "#z0", Var "#z1", Var "#z2", ....
-// Theta maps term sequences to Vars. That is, it accumulates the parts of the examples that differ.
+// antiUnifyTheta is a helper for antiUnify, returning the anti-unification of a term sequence with
+// respect to a substitution map (mapping term sequences to logical variables)
 // n contains the number of logical variables found so far: it lets us create fresh logical variables.
+// TODO: At the moment, we use logical variables of the form Var "#z0", Var "#z1", Var "#z2", ... This
+// will cause problems is a user happens to also use names in this namespace.
 let rec antiUnifyTheta examples (theta: (TermSequence<'a> * Term<'a>) list) n =
     printfn "antiUnifyTheta %A" examples
     match examples with
@@ -73,16 +79,19 @@ let rec antiUnifyTheta examples (theta: (TermSequence<'a> * Term<'a>) list) n =
         (z, ((ts, z) :: theta), n + 1)
     | _ -> failwith "There is no rule 11" // Necessary because all the previous matches have when clauses
 
+// preprocess turns all Vars into ground terms by pretending they're constant terms
 let rec preprocess = function
     | Function (name, args) -> Function (name, List.map preprocess args)
     | Var name -> Const name
     | x -> x
 
+// postprocess is the inverse of preprocess: it turns "ground" Consts back into ungrounded variables.
 let rec postprocess = function
     | Function (name, args) -> Function (name, List.map postprocess args)
     | Const name -> Var name
     | x -> x
 
+// antiUnify returns the least general generalisation of a list of example terms (a term sequence).
 let antiUnify = function
     | [] -> None
     | examples ->
