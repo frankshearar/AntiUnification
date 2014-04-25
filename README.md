@@ -33,5 +33,7 @@ antiUnify [Function ("f", [Val 5]); Function ("f", [Val 6])] = Some (Function ("
 Further Reading
 -------------
 
-Bjarte M. Østvold's paper: http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.95.9108&rep=rep1&type=pdf
-William Byrd's Scheme implementation: https://github.com/webyrd/anti-unification
+<table>
+  <tr><td>Bjarte M. Østvold's paper</td><td>http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.95.9108&rep=rep1&type=pdf</td></tr>
+  <tr><td>William Byrd's Scheme implementation</td><td>https://github.com/webyrd/anti-unification</td></tr>
+</table>
