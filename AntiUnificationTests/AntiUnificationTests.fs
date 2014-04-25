@@ -29,6 +29,11 @@ type anti_unification() =
     member this.anti_unification_of_ununifiable_examples_is_logical_var() =
         check (Some(Var "#z0")) (antiUnify [Function ("f", [Val 5]); Function ("g", [Val 6])])
     [<Test>]
+    member this.can_generalise_structures_with_logical_vars() =
+        check (Some (Var "#z0")) (antiUnify [Var "#z0"; Var "#z0"])
+        check (Some (Function ("f", [Var "#z0"]))) (antiUnify [Function ("f", [Val 5]); Function ("f", [Var "var"])])
+        check (Some (Function ("f", [Var "#z0"]))) (antiUnify [Function ("f", [Var "var"]); Function ("f", [Val 5])])
+    [<Test>]
     member this.function_arity_counts() =
         check (Some(Var "#z0")) (antiUnify [Function ("f", [Val 5]); Function ("f", [Val 5; Val 5])])
     [<Test>]

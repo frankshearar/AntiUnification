@@ -6,6 +6,7 @@ type Term<'a> =
     | Function of Symbol * Term<'a> list
     | Val of 'a
     | Var of string
+    | Const of string
 
 type TermSequence<'a> = Term<'a> list
 
@@ -50,7 +51,7 @@ let var base_name n =
 let rec antiUnifyTheta examples (theta: (TermSequence<'a> * Term<'a>) list) n =
     printfn "antiUnifyTheta %A" examples
     match examples with
-    | [] -> failwith "Cannot invoke antiUnifyTheta with []" // Required for completeness, but antiUnify guarantees that examples is not empty
+    | [] -> failwith "Cannot invoke antiUnifyTheta with []"
     | t::ts when andMap (fun t' -> t' = t) examples -> (t, theta, n) // rule 7: all examples the same? return the first
     | ((Function (f, args)) as t)::ts when (andMap (function
                                                  | Function (this_name, these_args) -> f = this_name && args.Length = these_args.Length // Function name & arity count!
@@ -72,8 +73,19 @@ let rec antiUnifyTheta examples (theta: (TermSequence<'a> * Term<'a>) list) n =
         (z, ((ts, z) :: theta), n + 1)
     | _ -> failwith "There is no rule 11" // Necessary because all the previous matches have when clauses
 
+let rec preprocess = function
+    | Function (name, args) -> Function (name, List.map preprocess args)
+    | Var name -> Const name
+    | x -> x
+
+let rec postprocess = function
+    | Function (name, args) -> Function (name, List.map postprocess args)
+    | Const name -> Var name
+    | x -> x
+
 let antiUnify = function
     | [] -> None
-    | examples  ->
-        let (generalised_example, _, _) = antiUnifyTheta examples [] 0 in
-            Some generalised_example
+    | examples ->
+        let processed_examples = List.map preprocess examples
+        let (generalised_example, _, _) = antiUnifyTheta processed_examples [] 0
+        Some (postprocess generalised_example)
