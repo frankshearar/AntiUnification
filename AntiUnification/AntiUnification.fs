@@ -19,8 +19,7 @@ let andMap f xs =
 let heads xs: Term<'a> list =
     List.map (function
         | Function (name, [t]) -> t
-        | Function (name, t::ts) ->
-            Function (name, [t])
+        | Function (name, t::ts) -> Function (name, [t])
         | unrecognised -> failwith (sprintf "heads can only process a Function, not %A" unrecognised)) xs
    
 // tails returns a list of Functions whose lists are the tails of the original Functions when given a term sequence (of Functions)
