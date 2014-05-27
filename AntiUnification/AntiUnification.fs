@@ -13,7 +13,7 @@ type TermSequence<'a> = Term<'a> list
 // and_map returns true iff a predicate is true for every element in a list
 // ('a -> bool) -> 'a list -> bool
 let andMap f xs =
-    List.fold (fun a b -> a && b) true (List.map f xs)
+    List.fold (&&) true (List.map f xs)
 
 // heads returns a list of Functions whose contained lists contain the heads of the original Functions when given a term sequence (of Functions)
 let heads xs: Term<'a> list =
