@@ -30,6 +30,8 @@ antiUnify [Val 1; Val 2] = Some (Var "#z0")
 antiUnify [Function ("f", [Val 5]); Function ("f", [Val 6])] = Some (Function ("f", [Var "#z0"]))
 ````
 
+[![Build status](https://ci.appveyor.com/api/projects/status/aowh0espi50oqd1l)](https://ci.appveyor.com/project/frankshearar/antiunification)
+
 Further Reading
 ---------------
 
