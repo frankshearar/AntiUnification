@@ -1,11 +1,18 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+VisualStudioVersion = 12.0.30324.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "AntiUnification", "AntiUnification\AntiUnification.fsproj", "{4DCD05DD-571E-4179-96BF-1273812743BE}"
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "AntiUnificationTests", "AntiUnificationTests\AntiUnificationTests.fsproj", "{3DC80CA0-2A58-4F71-8DA3-D46C36447314}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{49AB6EFA-6840-4B0A-9115-29074F9A1931}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
