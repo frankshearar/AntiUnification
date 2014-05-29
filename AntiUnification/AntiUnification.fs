@@ -69,7 +69,7 @@ let var base_name n =
     Var (sprintf "%s%d" base_name n)
 
 // allSame returns true if all elements in the sequence are equal to the first one.
-let allSame l =
+let allEqual l =
     let first = head l
     andMap (fun each -> each = first) l
 
@@ -92,8 +92,8 @@ let possiblyUnifiable examples =
 // TODO: At the moment, we use logical variables of the form Var "#z0", Var "#z1", Var "#z2", ... This
 // will cause problems is a user happens to also use names in this namespace.
 let rec antiUnifyTheta (theta: (TermSequence<Term<'a>> * Term<'a>) list) n = function
-    | One x -> (x, theta, n)
-    | Many (t, _) as examples when allSame examples -> (t, theta, n) // rule 7: all examples the same? return the first
+    | One x -> (x, theta, n) // rule 7: all examples (one of them) the same? return that example
+    | Many (t, _) as examples when allEqual examples -> (t, theta, n) // rule 7: all examples the same? return the first
     | Many ((Function (f, args)), _) as examples when possiblyUnifiable examples -> // rule 8: recurse into the Function arguments.
         let s, theta', n = antiUnifyTheta theta n (heads examples)
         let tails_au, theta'', n = antiUnifyTheta theta' n (tails examples)
