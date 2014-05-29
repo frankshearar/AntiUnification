@@ -18,7 +18,7 @@ let rec fold f seed = function
 
 let rec fromList = function
     | [] -> failwith "Cannot convert [] to a NonEmptyList"
-    | t::[] -> One t
+    | [t] -> One t
     | t::ts -> Many (t, fromList ts)
 
 let head = function
