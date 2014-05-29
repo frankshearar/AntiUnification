@@ -29,7 +29,7 @@ let rec map f = function
     | One x -> One (f x)
     | Many (x, xs) -> Many (f x, map f xs)
 
-// and_map returns true iff a predicate is true for every element in a non-empty list
+// andMap returns true iff a predicate is true for every element in a non-empty list
 let andMap f xs =
     fold (&&) true (map f xs)
 
