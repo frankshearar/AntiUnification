@@ -70,6 +70,7 @@
     </ProjectReference>
   </ItemGroup>
   <Target Name="BeforeBuild">
+    <Import Project="..\.nuget\NuGet.targets" />
     <DownloadNuGet />
     <RestorePackages />
   </Target>
