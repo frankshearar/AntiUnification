@@ -126,4 +126,4 @@ let rec postprocess = function
 let antiUnify examples =
     let processed_examples = map preprocess examples
     let generalised_example, _, _ = antiUnifyTheta [] 0 processed_examples
-    Some (postprocess generalised_example)
+    postprocess generalised_example

@@ -19,16 +19,32 @@ type Term<'a> =
     | Function of Symbol * Term<'a> list
     | Val of 'a
     | Var of string
+    | Const of string
 ````
 
-Then
+then
 
 ````fsharp
-// The examples differ completely - the best you can say is "the general example is something":
-antiUnify [Val 1; Val 2] = Some (Var "#z0")
 // The examples differ only in the argument to the function, so we parameterise only that:
-antiUnify [Function ("f", [Val 5]); Function ("f", [Val 6])] = Some (Function ("f", [Var "#z0"]))
+antiUnify (Many (Function ("f", [Val 5]), One (Function ("f", [Val 6])))) = Function ("f", [Var "#z0"])
+
+// The examples differ completely - the best you can say is "the general example is something":
+antiUnify (Many (Val 1, One (Val 2))) = Var "#z0"
 ````
+
+To anti-unify an arbitrary data structure, you will need to write translation routines to and from `Term<'a>`. For instance,
+
+````fsharp
+type BinaryTree<'a> =
+    | Node of BinaryTree<'a> * BinaryTree<'a>
+    | Leaf of 'a
+
+let rec toTerm = function
+    | Node (a, b) -> Function ("Node", [toTerm a; toTerm b])
+    | Leaf v -> Val v
+````
+
+The module supplies `fromList`, which translates from a `list` to a `TermSequence<'a>`. This lets you easily use anti-unification, while preserving the algorithm's requirement to have at least one example.
 
 [![Build status](https://ci.appveyor.com/api/projects/status/aowh0espi50oqd1l)](https://ci.appveyor.com/project/frankshearar/antiunification)
 
