@@ -71,7 +71,6 @@
   </ItemGroup>
   <Import Project="..\.nuget\NuGet.targets" />
   <Target Name="BeforeBuild">
-    <CheckPrerequisites />
     <RestorePackages />
   </Target>
   <Target Name="AfterBuild">
