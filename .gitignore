@@ -30,3 +30,6 @@ _TeamCity*
 
 # Emacs temp files
 *~
+
+# NuGet binaries
+NuGet.exe
