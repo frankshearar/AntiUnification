@@ -43,7 +43,7 @@ Target "Test" (fun _ ->
       |> NUnit (fun p ->
           {p with
              DisableShadowCopy = true;
-             Framework = "net-4.5";
+//             Framework = "net-4.5";
              OutputFile = testDir + "TestResults.xml" })
 )
 
