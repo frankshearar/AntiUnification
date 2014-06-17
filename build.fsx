@@ -1,5 +1,5 @@
-// include Fake lib
-#r @"packages\FAKE\tools\FakeLib.dll"
+#I "packages/FAKE/tools"
+#r "FakeLib.dll"
 open Fake
 open Fake.AssemblyInfoFile
 open Fake.Git
@@ -43,7 +43,6 @@ Target "Test" (fun _ ->
       |> NUnit (fun p ->
           {p with
              DisableShadowCopy = true;
-             Framework = "net-4.5";
              OutputFile = testDir + "TestResults.xml" })
 )
 

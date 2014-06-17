@@ -44,7 +44,8 @@ let rec toTerm = function
     | Leaf v -> Val v
 ````
 
-[![Build status](https://ci.appveyor.com/api/projects/status/aowh0espi50oqd1l/branch/master)](https://ci.appveyor.com/project/frankshearar/antiunification)
+[![Build status on .NET](https://ci.appveyor.com/api/projects/status/aowh0espi50oqd1l)](https://ci.appveyor.com/project/frankshearar/antiunification)
+[![Build Status on Mono](https://secure.travis-ci.org/frankshearar/AntiUnification.png?branch=travis-support)](http://travis-ci.org/frankshearar/AntiUnification)
 
 Further Reading
 ---------------
