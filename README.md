@@ -53,3 +53,5 @@ Further Reading
 Bjarte M. Østvold's paper            | http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.95.9108&rep=rep1&type=pdf
 -------------------------------------|-----------------------------------------------------------------------------------
 William Byrd's Scheme implementation | https://github.com/webyrd/anti-unification
+-------------------------------------|-----------------------------------------------------------------------------------
+Applications                         | https://en.wikipedia.org/wiki/Anti-unification_(computer_science)#Applications
