@@ -45,7 +45,7 @@ let rec toTerm = function
 ````
 
 [![Build status on .NET](https://ci.appveyor.com/api/projects/status/aowh0espi50oqd1l)](https://ci.appveyor.com/project/frankshearar/antiunification)
-[![Build Status on Mono](https://secure.travis-ci.org/frankshearar/AntiUnification.png?branch=travis-support)](http://travis-ci.org/frankshearar/AntiUnification)
+[![Build Status on Mono](https://secure.travis-ci.org/frankshearar/AntiUnification.png?branch=master)](http://travis-ci.org/frankshearar/AntiUnification)
 
 Further Reading
 ---------------
