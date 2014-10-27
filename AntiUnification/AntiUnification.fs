@@ -39,7 +39,7 @@ let heads xs =
         | Function (name, [t]) -> t
         | Function (name, t::ts) -> Function (name, [t])
         | unrecognised -> failwith (sprintf "heads can only process a Function, not %A" unrecognised)) xs
-   
+
 // tails returns a list of Functions whose lists are the tails of the original Functions when given a term sequence (of Functions)
 let tails xs =
     map (function
@@ -48,16 +48,16 @@ let tails xs =
             Function (name, ts)
         | unrecognised -> failwith (sprintf "tails can only process a Function, not %A" unrecognised)) xs
 
-// has_map returns true iff the substitution maps a term sequence
-let has_map key substitution =
+// hasMap returns true iff the substitution maps a term sequence
+let hasMap key substitution =
     List.exists (fun e -> fst e = key) substitution
 
-// find_map returns the map for a term sequence in a substitution
-let find_map term_sequence substitution =
+// findMap returns the map for a term sequence in a substitution
+let findMap term_sequence substitution =
     List.find (fun e -> fst e = term_sequence) substitution
 
-// has_var returns true iff the substitution contain a mapping to a logical variable
-let has_var term_sequence theta =
+// hasVar returns true iff the substitution contain a mapping to a logical variable
+let hasVar term_sequence theta =
     List.exists (function
         | _, Var _ -> true
         | _, Const _
@@ -102,8 +102,8 @@ let rec antiUnifyTheta (theta: (TermSequence<Term<'a>> * Term<'a>) list) n = fun
                          | Var name -> Function (f, (s::[Var name]))
                          | unrecognised -> failwith (sprintf "unrecognised term %A while walking function argument tails" unrecognised)
         au_of_args, theta'', n
-    | Many _ as ts when has_map ts theta -> // rule 9: return the previously mapped logical variable
-        let term_sequence, mapped_var = find_map ts theta
+    | Many _ as ts when hasMap ts theta -> // rule 9: return the previously mapped logical variable
+        let term_sequence, mapped_var = findMap ts theta
         mapped_var, theta, n
     | Many _ as ts -> // rule 10: introduce a fresh logical variable
         let z = var "#z" n // This hardcoded base name lets us avoid passing in a name generator. A post-process step could always replace these. But what if someone wants to use "#z" prefixed names....!
