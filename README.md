@@ -28,7 +28,7 @@ then, given that `fromList` translates from a `list` to a `TermSequence<'a>`, we
 // The examples differ only in the argument to the function, so we parameterise only that:
 antiUnify (fromList [Function ("f", [Val 5]); Function ("f", [Val 6])]) = Function ("f", [Var "#z0"])
 
-// The examples differ completely - the best you can say is "the general example is something":
+// Here the examples differ completely - the best you can say is "the general example is something":
 antiUnify (fromList [Val 1; Val 2]) = Var "#z0"
 ````
 
@@ -50,8 +50,9 @@ let rec toTerm = function
 Further Reading
 ---------------
 
-Bjarte M. Østvold's paper            | http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.95.9108&rep=rep1&type=pdf
+Reference                            | URL
 -------------------------------------|-----------------------------------------------------------------------------------
+Bjarte M. Østvold's paper            | http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.95.9108&rep=rep1&type=pdf
 William Byrd's Scheme implementation | https://github.com/webyrd/anti-unification
 Applications                         | https://en.wikipedia.org/wiki/Anti-unification_(computer_science)#Applications
 
