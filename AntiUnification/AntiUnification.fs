@@ -31,24 +31,24 @@ let rec map f = function
 
 let foreach xs f = map f xs
 
-// andMap returns true iff a predicate is true for every element in a non-empty list
+// forall returns true iff a predicate is true for every element in a non-empty list.
 let forall f xs = fold (&&) true (map f xs)
 
-// Given a TermSequence of Functions, heads returns a TermSequence containing the heads of the argument lists
+// Given a TermSequence of Functions, heads returns a TermSequence containing the heads of the argument lists.
 let heads xs = foreach xs (function
     | Function (name, t::ts) -> t
     | unrecognised           -> failwith (sprintf "heads can only process a Function, not %A" unrecognised))
 
-// Given a TermSequence of Functions, tails returns a TermSequence containing Functions with the tails of the argument lists
+// Given a TermSequence of Functions, tails returns a TermSequence containing Functions with the tails of the argument lists.
 let tails xs = foreach xs (function
     | Function (name, t::ts) -> Function (name, ts)
     | unrecognised           -> failwith (sprintf "tails can only process a Function, not %A" unrecognised))
 
-// hasMap returns true iff the substitution maps a term sequence
+// hasMap returns true iff the substitution maps a term sequence.
 let hasMap key substitution =
     List.exists ((=) key << fst) substitution
 
-// findMap returns the map for a term sequence in a substitution
+// findMap returns the map for a term sequence in a substitution.
 let findMap key substitution =
     List.find ((=) key << fst) substitution
 
@@ -59,11 +59,12 @@ let allEqual = function
     | One _        -> true
     | Many (x, xs) -> forall ((=) x) xs
 
+// functionUnifiable returns true if the given Function has the expected name and arity.
 let functionUnifiable name1 arity = function
     | Function (name2, args2) -> name2 = name1 && args2.Length = arity
     | _                       -> false
 
-// true iff all elements in the sequence are Functions with the same name and the same arity
+// allFunctionUnifiable returns true iff all elements in the sequence are Functions with the same name and the same arity.
 let allFunctionUnifiable = function
     | Many (Function (f, args), tail) -> forall (functionUnifiable f args.Length) tail
     | _                               -> false
@@ -92,19 +93,19 @@ let rec antiUnifyTheta (theta: (TermSequence<Term<'a>> * Term<'a>) list) n = fun
     | examples                                    -> let z = var "#z" n
                                                      (z, ((examples, z) :: theta), n + 1)
 
-// preprocess turns all Vars into ground terms by pretending they're constant terms
+// preprocess turns all Vars into ground terms by pretending they're constant terms.
 let rec preprocess = function
     | Function (name, args) -> Function (name, List.map preprocess args)
     | Var name              -> Const name
     | x                     -> x
 
-// postprocess is the inverse of preprocess: it turns "ground" Consts back into ungrounded variables
+// postprocess is the inverse of preprocess: it turns "ground" Consts back into ungrounded variables.
 let rec postprocess = function
     | Function (name, args) -> Function (name, List.map postprocess args)
     | Const name            -> Var name
     | x                     -> x
 
-// antiUnify returns the least general generalisation of a list of example terms (a term sequence)
+// antiUnify returns the least general generalisation of a list of example terms (a term sequence).
 let antiUnify examples =
     let processed_examples          = map preprocess examples
     let (generalised_example, _, _) = antiUnifyTheta [] 0 processed_examples
