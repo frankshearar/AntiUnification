@@ -77,7 +77,7 @@ let rec antiUnifyTheta (theta: (TermSequence<Term<'a>> * Term<'a>) list) n = fun
 
     // rule 7: all examples the same? return the first
     | One x                                       -> (x, theta, n)
-    | examples when allEqual examples             -> (head examples, theta, n) 
+    | examples when allEqual examples             -> (head examples, theta, n)
 
     // rule 8: recurse into the Function arguments
     | examples when allFunctionUnifiable examples -> let (arg, theta', n') = antiUnifyTheta theta n (heads examples)
@@ -89,9 +89,9 @@ let rec antiUnifyTheta (theta: (TermSequence<Term<'a>> * Term<'a>) list) n = fun
     | examples when hasMap examples theta         -> (snd (findMap examples theta), theta, n)
 
     // rule 10: introduce a "fresh" logical variable (see TODO)
-    | examples                                    -> let z = var "#z" n 
+    | examples                                    -> let z = var "#z" n
                                                      (z, ((examples, z) :: theta), n + 1)
-        
+
 // preprocess turns all Vars into ground terms by pretending they're constant terms
 let rec preprocess = function
     | Function (name, args) -> Function (name, List.map preprocess args)
