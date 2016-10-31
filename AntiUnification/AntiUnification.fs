@@ -29,20 +29,22 @@ let rec map f = function
     | One x        -> One (f x)
     | Many (x, xs) -> Many (f x, map f xs)
 
-let foreach xs f = map f xs
-
 // forall returns true iff a predicate is true for every element in a non-empty list.
 let forall f xs = fold (&&) true (map f xs)
 
 // Given a TermSequence of Functions, heads returns a TermSequence containing the heads of the argument lists.
-let heads xs = foreach xs (function
-    | Function (name, t::ts) -> t
-    | unrecognised           -> failwith (sprintf "heads can only process a Function, not %A" unrecognised))
+let heads xs =
+    xs
+    |> map (function
+            | Function (name, t::ts) -> t
+            | unrecognised           -> failwith (sprintf "heads can only process a Function, not %A" unrecognised))
 
 // Given a TermSequence of Functions, tails returns a TermSequence containing Functions with the tails of the argument lists.
-let tails xs = foreach xs (function
-    | Function (name, t::ts) -> Function (name, ts)
-    | unrecognised           -> failwith (sprintf "tails can only process a Function, not %A" unrecognised))
+let tails xs =
+    xs
+    |> map (function
+            | Function (name, t::ts) -> Function (name, ts)
+            | unrecognised           -> failwith (sprintf "tails can only process a Function, not %A" unrecognised))
 
 // hasMap returns true iff the substitution maps a term sequence.
 let hasMap key substitution =
