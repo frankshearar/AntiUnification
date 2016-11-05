@@ -8,18 +8,18 @@ Note that this is the first F# project of any consequence that I've written. If 
 So... what's that mean?
 -----------------------
 
-Suppose we have two structures - trees A and B, perhaps. Each structure has holes in it. A has a left subtree with a leaf value of 1 and a right subtree with leaf value "x" - a placeholder, or variable.. B has a left subtree with leaf value "y" - another placeholder - and a right subtree with leaf value 2. What values would x and y need to have for A and B to be equal? We call the process of discovering this mapping "unification".
+Suppose we have two structures - trees A and B, perhaps. Each structure has holes in it. A has a left subtree with a leaf value of 1 and a right subtree with leaf value "x" - a placeholder, or variable. B has a left subtree with leaf value "y" - another placeholder - and a right subtree with leaf value 2. What values would x and y need to have for A and B to be equal? We call the process of discovering this mapping "unification".
 
-Anti-unification, as its name suggests, is the inverse operation. Given a pair of terms, differing in part, what parameterised prototypical structure could - with suitable substitutions - yield the original structures? That is, anti-unification yields the _least general generalisetion_ of the set of structures.
+Anti-unification, as its name suggests, is the inverse operation. Given a pair of terms, differing in part, what parameterised prototypical structure could - with suitable substitutions - yield the original structures? That is, anti-unification yields the _least general generalisation_ of the set of structures.
 
 Suppose we have the data type
 
 ````fsharp
 type Term<'a> =
     | Function of Symbol * Term<'a> list
-    | Val of 'a
-    | Var of string
-    | Const of string
+    | Val      of 'a
+    | Var      of string
+    | Const    of string
 ````
 
 then, given that `fromList` translates from a `list` to a `TermSequence<'a>`, we have that
@@ -41,7 +41,7 @@ type BinaryTree<'a> =
 
 let rec toTerm = function
     | Node (a, b) -> Function ("Node", [toTerm a; toTerm b])
-    | Leaf v -> Val v
+    | Leaf v      -> Val v
 ````
 
 [![Build status on .NET](https://ci.appveyor.com/api/projects/status/aowh0espi50oqd1l)](https://ci.appveyor.com/project/frankshearar/antiunification)

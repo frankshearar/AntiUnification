@@ -56,4 +56,4 @@ type ``Anti-unification of arbitrary types``() =
         let tree2 = Node (Leaf 1, Leaf 3)
         let term1 = toTerm tree1
         let term2 = toTerm tree2
-        check (Function ("Node",[Function ("Node",[Val 1]); Var "#z0"])) (antiUnify (fromList [term1; term2]))
+        check (Function ("Node", [Val 1; Var "#z0"])) (antiUnify (fromList [term1; term2]))
